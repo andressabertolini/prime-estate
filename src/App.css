@@ -1,3 +1,20 @@
+.nav {
+  padding: 10px 40px;
+  display: flex;
+  align-items: center;
+}
+
+.nav img {
+  width: 80px;
+  margin-right: 40px;
+}
+
+.nav a {
+  padding: 0 20px;
+  text-decoration: none;
+  color: #000;
+}
+
 .banner {
   display: flex;
 }
@@ -16,7 +33,7 @@
 
 .banner-content {
   width: 50%;
-  background-color: rgb(220, 218, 218);
+  /* background-color: #dcdada; */
   padding: 50px;
   display: flex;
   align-items: center;
@@ -42,4 +59,27 @@
   text-decoration: none;
   padding: 10px 20px;
   display: inline-block;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+}
+
+.properties-list {
+  /* background-color: #1296a9; */
+  padding: 30px 0 60px;
+}
+
+.property-card {
+  background-color: #fff;
+  margin: 10px;
+  padding: 10px;
+  /* border-radius: 8px; */
+  width: 25%;
+}
+
+.property-card img{
+  width: 100%;
 }
