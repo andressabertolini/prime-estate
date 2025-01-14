@@ -3,13 +3,13 @@ import { useEffect, useState } from "react";
 import Banner from "../components/Banner";
 import Property from "../components/Property";
 /* Images */
-import Home1Img from "../assets/images/house.jpg";
-import Home2Img from "../assets/images/apartment.jpg";
+import House1 from "../assets/images/house1.jpg";
+import House2 from "../assets/images/house2.jpg";
 
 const apiKey = process.env.REACT_APP_API_KEY;
 const apiHost = process.env.REACT_APP_API_HOST;
 
-const forRent = `https://${apiHost}/properties/list?locationExternalIDs=5002%2C6020&purpose=for-rent&hitsPerPage=4&page=0&lang=en&sort=city-level-score&rentFrequency=monthly&categoryExternalID=4`;
+const forRent = `https://${apiHost}/properties/list?locationExternalIDs=5002%2C6020&purpose=for-rent&hitsPerPage=4&page=0&lang=en&sort=city-level-score&rentFrequency=monthly&categoryExternalID=4&priceMax=4000`;
 const forSale = `https://${apiHost}/properties/list?locationExternalIDs=5002%2C6020&purpose=for-sale&hitsPerPage=4&page=0&lang=en&sort=city-level-score&rentFrequency=monthly&categoryExternalID=4`;
 
 const Home = () => {
@@ -28,6 +28,7 @@ const Home = () => {
             .then(res => res.json())
             .then(data => {
                 setPropertiesRent(data.hits)
+                console.log(data.hits)
             })
 
         fetch(forSale,
@@ -58,13 +59,11 @@ const Home = () => {
                 desc2="and more"
                 buttonText="Explore Renting"
                 linkUrl="/search?purpose=for-rent"
-                imageUrl={Home1Img}
+                imageUrl={House1}
                 align="left"
             />
             <div className="properties-list">
-                <div className="container">
-                    {propertiesRent.map((property) => (<Property property={property} key={property.id} />))}
-                </div>
+                {propertiesRent.map((property) => (<Property property={property} key={property.id} />))}
             </div>
             <Banner 
                 purpose="Buy a Home"
@@ -74,13 +73,11 @@ const Home = () => {
                 desc2="and more"
                 buttonText="Explore Buying"
                 linkUrl="/search?purpose=for-sale"
-                imageUrl={Home2Img}
+                imageUrl={House2}
                 align="right"
             />
             <div className="properties-list">
-                <div className="container">
-                    {propertiesSale.map((property) => (<Property property={property} key={property.id}/>))}
-                </div>
+                {propertiesSale.map((property) => (<Property property={property} key={property.id}/>))}
             </div>
         </>
     )

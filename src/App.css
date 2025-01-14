@@ -5,7 +5,7 @@
 }
 
 .nav img {
-  width: 80px;
+  width: 60px;
   margin-right: 40px;
 }
 
@@ -33,10 +33,11 @@
 
 .banner-content {
   width: 50%;
-  /* background-color: #dcdada; */
+  background-color: #1296a9;
   padding: 50px;
   display: flex;
   align-items: center;
+  color: white;
 }
 
 .banner h2 {
@@ -54,7 +55,7 @@
 }
 
 .banner a {
-  background-color: #1296a9;
+  border: 1px solid #fff;
   color: #fff;
   text-decoration: none;
   padding: 10px 20px;
@@ -70,6 +71,7 @@
 .properties-list {
   /* background-color: #1296a9; */
   padding: 30px 0 60px;
+  display: flex;
 }
 
 .property-card {
@@ -78,8 +80,82 @@
   padding: 10px;
   /* border-radius: 8px; */
   width: 25%;
+  text-decoration: none;
+  color: #000;
 }
 
-.property-card img{
+.property-card .property-cover{
   width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.property-badge {
+  background-color: #1296a9;
+  color: white;
+  font-weight: bold;
+  font-size: 12px;
+  padding: 5px 10px;
+  margin-top: 20px;
+  display: inline-block;
+}
+
+.property-card h3 {
+  font-weight: normal;
+  margin-top: 5px;
+}
+
+.property-price {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.property-features {
+  
+}
+
+.property-amenities {
+  list-style-type: none;
+  padding: 0;
+  color: #7c7b7b;
+}
+
+.property-amenities li {
+  display: inline-block;
+  padding-right: 15px;
+  font-size: 14px;
+}
+
+.property-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.property-footer img {
+  width: 40px;
+  height: auto;
+}
+
+.property-icon {
+  margin-right: 3px;
+}
+
+.property-icon.sqft{
+  width: 14px;
+  vertical-align: -1px;
+}
+
+.property-icon.bed{
+  width: 17px;
+  vertical-align: -2px;
+}
+
+.property-icon.bath{
+  width: 15px;
+  vertical-align: -1px;
+}
+
+.property-features span {
+  margin-right: 6px;
 }
