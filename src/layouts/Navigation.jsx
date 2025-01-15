@@ -6,8 +6,8 @@ const Navigation = () => {
         <nav className="nav">
             <img src={Logo} />
             <NavLink exact to="/">Home</NavLink>
-            <NavLink exact to="/">Rent</NavLink>
-            <NavLink exact to="/">Buy</NavLink>
+            <NavLink exact to="/properties?purpose=for-rent">Rent</NavLink>
+            <NavLink exact to="/properties?purpose=for-sale">Buy</NavLink>
         </nav>
     )
 }
