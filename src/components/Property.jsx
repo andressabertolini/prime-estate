@@ -20,7 +20,7 @@ const Property = ({ property }) => {
                 <span>
                     <img src={IconSqft} className="property-icon sqft" />
                     {property.area && typeof property.area === "number"
-                        ? (property.area * 10.764).toFixed(2)
+                        ? (parseInt(property.area * 10.764))
                         : ""} <strong>sqft</strong>&nbsp;
                 </span>
                 <span>

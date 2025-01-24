@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
 import data from "../data";
 /* Components */
+import Search from "../components/Search";
 import Banner from "../components/Banner";
 import Property from "../components/Property";
 import Skeleton from "../components/Skeleton";
-/* Images */
-import House1 from "../assets/images/house1.jpg";
-import House2 from "../assets/images/house2.jpg";
 
 const apiKey = process.env.REACT_APP_API_KEY;
 const apiHost = process.env.REACT_APP_API_HOST;
@@ -20,68 +18,76 @@ const Home = () => {
     const [isLoadingRent, setIsLoadingRent] = useState(true);
     const [isLoadingSale, setIsLoadingSale] = useState(true);
 
-    const fetchAPI = async () => {
+    const ONE_WEEK = 7 * 24 * 60 * 60 * 1000;
+
+    const fetchAPI = async (url, setFunction, cacheKey) => {
         try {
-            // Requisição para imóveis para aluguel
-            const responseRent = await fetch(forRent, {
-                method: 'GET',
+            const response = await fetch(url, {
+                method: "GET",
                 headers: {
-                    'X-RapidAPI-Key': apiKey,
-                    'X-RapidAPI-Host': apiHost,
+                    "X-RapidAPI-Key": apiKey,
+                    "X-RapidAPI-Host": apiHost,
                 },
             });
 
-            if (!responseRent.ok) {
-                throw new Error("Failed to fetch data from API for rent");
+            if (!response.ok) {
+                throw new Error("Failed to fetch data from API");
             }
-            const apiDataRent = await responseRent.json();
-            setPropertiesRent(apiDataRent?.hits || []); // Corrigido para pegar os imóveis da resposta
-        } catch (error) {
-            console.error("API fetch failed for rent, using fallback data:", error);
-            setPropertiesRent(data); // Usa o arquivo de dados como fallback
-        } finally {
-            setIsLoadingRent(false); // Finaliza o loading após a tentativa
-        }
 
-        try {
-            // Requisição para imóveis à venda
-            const responseSale = await fetch(forSale, {
-                method: 'GET',
-                headers: {
-                    'X-RapidAPI-Key': apiKey,
-                    'X-RapidAPI-Host': apiHost,
-                },
-            });
+            const apiData = await response.json();
+            setFunction(apiData?.hits || []);
 
-            if (!responseSale.ok) {
-                throw new Error("Failed to fetch data from API for sale");
-            }
-            const apiDataSale = await responseSale.json();
-            setPropertiesSale(apiDataSale?.hits || []); // Corrigido para pegar os imóveis da resposta
+            // Atualiza o cache
+            localStorage.setItem(
+                cacheKey,
+                JSON.stringify({
+                    data: apiData?.hits || [],
+                    timestamp: Date.now(),
+                })
+            );
         } catch (error) {
-            console.error("API fetch failed for sale, using fallback data:", error);
-            setPropertiesSale(data); // Usa o arquivo de dados como fallback
-        } finally {
-            setIsLoadingSale(false); // Finaliza o loading após a tentativa
+            console.error("API fetch failed, using fallback data:", error);
+            setFunction(data); // Usa dados de fallback
         }
     };
 
     useEffect(() => {
-        fetchAPI();
-    }, []); // Requisição executada quando o componente for montado
+        const checkAndFetch = async () => {
+            // Cache para aluguel
+            const cachedRent = JSON.parse(localStorage.getItem("propertiesRent"));
+            if (cachedRent && Date.now() - cachedRent.timestamp < ONE_WEEK) {
+                setPropertiesRent(cachedRent.data);
+                setIsLoadingRent(false);
+            } else {
+                await fetchAPI(forRent, setPropertiesRent, "propertiesRent");
+                setIsLoadingRent(false);
+            }
+
+            // Cache para venda
+            const cachedSale = JSON.parse(localStorage.getItem("propertiesSale"));
+            if (cachedSale && Date.now() - cachedSale.timestamp < ONE_WEEK) {
+                setPropertiesSale(cachedSale.data);
+                setIsLoadingSale(false);
+            } else {
+                await fetchAPI(forSale, setPropertiesSale, "propertiesSale");
+                setIsLoadingSale(false);
+            }
+        };
+
+        checkAndFetch();
+    }, []);
 
     return (
         <>
+            <div className="search-container">
+                <Search />
+            </div>
             <Banner 
                 purpose="Rent a Home"
-                title1="Rental Homes for"
-                title2="Everyone"
-                desc1="Explore Apartments, Villas, Homes"
-                desc2="and more"
+                title="Rental Homes for Everyone"
+                desc="Explore Apartments, Villas, Homes and more"
                 buttonText="Explore Renting"
                 linkUrl="/properties?purpose=for-rent"
-                imageUrl={House1}
-                align="left"
             />
             <div className="properties-list">
                 {isLoadingRent ? (
@@ -101,14 +107,10 @@ const Home = () => {
             </div>
             <Banner 
                 purpose="Buy a Home"
-                title1="Find, Buy & Own Your"
-                title2="Dream Home"
-                desc1="Explore Apartments, Villas, Homes"
-                desc2="and more"
+                title="Find, Buy & Own Your Dream Home"
+                desc="Explore Apartments, Villas, Homes and more"
                 buttonText="Explore Buying"
                 linkUrl="/properties?purpose=for-sale"
-                imageUrl={House2}
-                align="right"
             />
             <div className="properties-list">
                 {isLoadingSale ? (

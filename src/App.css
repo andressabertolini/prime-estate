@@ -1,10 +1,15 @@
+body {
+  font-family: 'Open Sans', sans-serif;
+}
+
 .nav {
   padding: 10px 40px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 
-.nav img {
+.nav .logo {
   width: 60px;
   margin-right: 40px;
 }
@@ -15,29 +20,29 @@
   color: #000;
 }
 
-.banner {
+.nav .nav-left {
   display: flex;
+  align-items: center;
 }
 
-.banner.right .banner-content {
-  order: 1;
+.nav .search-icon {
+  width: 16px;
+  margin-left: 10px;
 }
 
-.banner.right .banner img {
-  order: 2;
-}
-
-.banner img {
-  width: 50%;
+.banner {
+  background-color: #1296a9;
 }
 
 .banner-content {
-  width: 50%;
-  background-color: #1296a9;
-  padding: 50px;
+  padding: 30px 50px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   color: white;
+  /* max-width: 1000px;
+  margin: 0 auto; */
+  /* gap: 100px; */
 }
 
 .banner h2 {
@@ -238,4 +243,207 @@
 .footer{
   text-align: center;
   padding: 40px 0;
+}
+
+.search-container {
+  padding: 120px 0;
+  background-image: url('assets/images/search-bg2.jpg');
+  background-size: cover;
+  background-position: center center;
+  background-color: rgba(18, 150, 169,0.6);
+  background-blend-mode: lighten;
+}
+
+.search-container .search {
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: #fff;
+  padding: 30px;
+  box-shadow: 0px 0px 8px 0px rgba(0,0,0,40%);
+}
+
+.search-container .search h1 {
+  margin-top: 0;
+  text-align: center;
+  color: #1296a9;
+  text-transform: uppercase;
+  font-size: 30px;
+}
+
+.search-bar {
+  width: 100%;
+  padding: 10px 20px 10px 40px;
+  border-radius: 30px;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+  border: 1px solid #8d8c8c;
+}
+
+.search-bar__container {
+  position: relative;
+}
+
+.search-bar__container img {
+  width: 18px;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+.search-bar__submit {
+  background-color: #1296a9;
+  color: #fff;
+  border-radius: 30px;
+  padding: 10px 0;
+  width: 100%;
+  border: 0;
+  margin-top: 40px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.choice-chips {
+  width: 200px;
+  display: flex;
+  position: relative;
+}
+
+.choice-chips .choice-chip__bg {
+  position: absolute;
+  background-color: #1296a9;
+  width: 50%;
+  height: 100%;
+  left: 0;
+  transition: left 0.3s;
+  border-radius: 30px;
+}
+
+.choice-chips .choice-chip {
+  width: 50%;
+  padding: 10px 0;
+  position: relative;
+  z-index: 1;
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.choice-chips .choice-chip.active {
+  color: #fff;
+}
+
+.search-options {
+  margin: 30px 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.search-options label {
+  display: flex;
+  align-items: center;
+}
+
+.search-options label > *:not(span) {
+  margin-left: 40px;
+}
+
+.search-options label span {
+  font-weight: 600;
+}
+
+.search-options label span.label-large {
+  width: 100px;
+}
+
+.search-options label span.label-small {
+  width: 55px;
+}
+
+.search-options label p {
+  margin: 0;
+  font-size: 14px;
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  background: #8d8c8c;
+  height: 5px;
+  border-radius: 50px;
+  background-image: linear-gradient(#1296a9, #1296a9);
+  background-size: 50% 100%;
+  background-repeat: no-repeat;
+}
+
+/* Chrome, Safari, Edge */ 
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 15px;
+  height: 15px;
+  background-color: #1296a9 ;
+  border-radius: 50%;
+}
+
+/* Firefox */
+input[type="range"]::-moz-range-thumb {
+  -webkit-appearance: none;
+  width: 15px;
+  height: 15px;
+  background-color: #1296a9 ;
+  border: none;
+  border-radius: 50%;
+}
+
+.custom-select {
+  position: relative;
+  width: 200px;
+  user-select: none;
+  font-size: 14px;
+}
+
+.custom-select__trigger {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f0f0f0;
+  padding: 10px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.custom-select__trigger .arrow {
+  width: 8px;
+  height: 8px;
+  border: solid #333;
+  border-width: 0 2px 2px 0;
+  display: inline-block;
+  transform: rotate(45deg);
+  margin-left: 10px;
+  margin-top: -3px;
+}
+
+.custom-options {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-top: none;
+  z-index: 1000;
+}
+
+.custom-option {
+  padding: 8px 10px;
+  cursor: pointer;
+}
+
+.custom-option:hover {
+  background: #e0e0e0;
+}
+
+.custom-option.selected {
+  background: #d0f0d0;
 }

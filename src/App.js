@@ -13,8 +13,8 @@ import Property from "./pages/Property";
 function App() {
   return (
     <div className="App">
-      <Router basename="/project/prime-estate">
-      {/* <Router> */}
+      {/* <Router basename="/project/prime-estate"> */}
+      <Router>
         <Navigation />
         <Routes>
           <Route path="/" element={<Home />} />
