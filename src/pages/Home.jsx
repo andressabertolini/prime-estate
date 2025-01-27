@@ -37,7 +37,6 @@ const Home = () => {
             const apiData = await response.json();
             setFunction(apiData?.hits || []);
 
-            // Atualiza o cache
             localStorage.setItem(
                 cacheKey,
                 JSON.stringify({
@@ -47,13 +46,12 @@ const Home = () => {
             );
         } catch (error) {
             console.error("API fetch failed, using fallback data:", error);
-            setFunction(data); // Usa dados de fallback
+            setFunction(data);
         }
     };
 
     useEffect(() => {
         const checkAndFetch = async () => {
-            // Cache para aluguel
             const cachedRent = JSON.parse(localStorage.getItem("propertiesRent"));
             if (cachedRent && Date.now() - cachedRent.timestamp < ONE_WEEK) {
                 setPropertiesRent(cachedRent.data);
@@ -63,7 +61,6 @@ const Home = () => {
                 setIsLoadingRent(false);
             }
 
-            // Cache para venda
             const cachedSale = JSON.parse(localStorage.getItem("propertiesSale"));
             if (cachedSale && Date.now() - cachedSale.timestamp < ONE_WEEK) {
                 setPropertiesSale(cachedSale.data);

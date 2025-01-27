@@ -21,8 +21,8 @@ function App() {
           <Route path="/properties" element={<Properties />} />
           <Route path="/property/:id" element={<Property />} />
         </Routes>
+        <Footer />
       </Router>
-      <Footer />
     </div>
   );
 }

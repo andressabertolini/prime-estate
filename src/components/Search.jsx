@@ -1,6 +1,6 @@
 import ChoiceChips from "./ChoiceChips";
 import IconMagnifyingGlass from "../assets/icons/icon-magnifying-glass.svg";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Search = () => {
@@ -25,6 +25,10 @@ const Search = () => {
         ((priceRange - rangeMin) / (rangeMax - rangeMin)) * 100;
 
     const percentage = () => ((sqft - 1) / (5000 - 1)) * 100;
+
+    const selectRef = useRef(null);
+    const selectRef2 = useRef(null);
+    const selectRef3 = useRef(null);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -68,6 +72,26 @@ const Search = () => {
         setIsOpen3(false);
     }
 
+    const handleClickOutside = (event) => {
+        if(selectRef.current && !selectRef.current.contains(event.target)){
+            setIsOpen(false);
+        }
+        if(selectRef2.current && !selectRef2.current.contains(event.target)){
+            setIsOpen2(false);
+        }
+        if(selectRef3.current && !selectRef3.current.contains(event.target)){
+            setIsOpen3(false);
+        }
+    }
+
+    useEffect(() => {
+        document.addEventListener("mousedown", handleClickOutside);
+
+        return () => {
+            document.addEventListener("mousedown", handleClickOutside);
+        };
+    },[]);
+
     return (
         <div className="search">
             <h1>Search for your dream home</h1>
@@ -86,7 +110,7 @@ const Search = () => {
                 <div className="search-options">
                     <label>
                         <span className="label-large">Home type</span>
-                        <div className="custom-select">
+                        <div className="custom-select" ref={selectRef}>
                             <div className="custom-select__trigger" onClick={toggleDropdown}>
                                 <span>{homeType.charAt(0).toUpperCase() + homeType.slice(1)}</span>
                                 <div className="arrow"></div>
@@ -102,7 +126,7 @@ const Search = () => {
                     </label>
                     <label>
                         <span className="label-small">Beds</span>
-                        <div className="custom-select">
+                        <div className="custom-select" ref={selectRef2}>
                             <div className="custom-select__trigger" onClick={toggleDropdown2}>
                                 <span>{beds}</span>
                                 <div className="arrow"></div>
@@ -139,7 +163,7 @@ const Search = () => {
                     </label>
                     <label>
                         <span className="label-small">Baths</span>
-                        <div className="custom-select">
+                        <div className="custom-select" ref={selectRef3}>
                             <div className="custom-select__trigger" onClick={() => {setIsOpen3(!isOpen3)}}>
                                 <span>{baths}</span>
                                 <div className="arrow"></div>
