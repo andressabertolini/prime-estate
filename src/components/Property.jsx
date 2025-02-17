@@ -4,9 +4,9 @@ import IconBed from "../assets/icons/icon-bed.svg";
 import IconBath from "../assets/icons/icon-bath.svg";
 
 const Property = ({ property }) => {
-    const amenities = Array.isArray(property.amenities) ? property.amenities : []; // Verifica se amenities é um array
+    const amenities = Array.isArray(property.amenities) ? property.amenities : [];
     const limit = 4;
-    const limitedAmenities = amenities.slice(0, limit); // Usa slice para garantir que não haja erro
+    const limitedAmenities = amenities.slice(0, limit);
 
     return (
         <NavLink to={`/property/${property.externalID}`} className="property-card">

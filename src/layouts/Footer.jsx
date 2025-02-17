@@ -3,7 +3,7 @@ import LogoWhite from "../assets/images/logo-text-white.png";
 
 const Footer = () => {
     return(
-        <div className="footer">
+        <div className="footer container">
             <img src={LogoWhite} className="logo" />
             <span>Prime Estate 2025</span>
             <nav>
@@ -12,9 +12,9 @@ const Footer = () => {
                 <NavLink to="/properties?purpose=for-sale">New Homes</NavLink>
             </nav>
             <nav>
-                <NavLink to="/">Agents</NavLink>
-                <NavLink to="/">Calculator</NavLink>
-                <NavLink to="/">Search</NavLink>
+                <NavLink to="/agents">Agents</NavLink>
+                <NavLink to="/calculator">Calculator</NavLink>
+                <NavLink to="/properties?purpose=for-rent">Search</NavLink>
             </nav>
         </div>
     )

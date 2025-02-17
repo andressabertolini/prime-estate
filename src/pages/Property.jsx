@@ -1,9 +1,14 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+
+import house1Api from "../assets/images/house1-api.jpeg";
 
 const fallbackProperty = {
     title: "Beautiful Apartment in Downtown",
-    coverPhoto: { url: "https://via.placeholder.com/800" },
+    coverPhoto: {
+        url: house1Api
+    },
     price: 2000,
     amenities: [
         {
@@ -28,6 +33,7 @@ const Property = () => {
 
     const [property, setProperty] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [slidesPerView, setSlidesPerView] = useState(1);
 
     const fetchAPI = async () => {
         try {
@@ -79,6 +85,24 @@ const Property = () => {
         checkAndFetch();
     }, [id]);
 
+    useEffect(() => {
+        function handleResize(){
+            if(window.innerWidth < 768){
+                setSlidesPerView(1);
+            }else{
+                setSlidesPerView(1.5);
+            }
+        }
+
+        handleResize();
+
+        window.addEventListener("resize", handleResize);
+
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        }
+    },[]);
+
     if (isLoading) {
         return <p>Loading...</p>;
     }
@@ -90,11 +114,26 @@ const Property = () => {
     return (
         <div className="property-page">
             <h1>{property?.title}</h1>
-            <img
-                src={property?.coverPhoto?.url || ""}
-                alt="Property Cover"
-                className="property-page__cover"
-            />
+            <Swiper
+                slidesPerView={slidesPerView}
+                pagination={{clickable: true}}
+                navigation
+            >
+                <SwiperSlide>
+                    <img
+                        src={property?.coverPhoto?.url || ""}
+                        alt="Property Cover"
+                        className="property-page__slide"
+                    />
+                </SwiperSlide>
+                <SwiperSlide>
+                    <img
+                        src={property?.coverPhoto?.url || ""}
+                        alt="Property Cover"
+                        className="property-page__slide"
+                    />
+                </SwiperSlide>
+            </Swiper>
             <p className="property-page__price">
                 <strong>
                     {property?.price?.toLocaleString("en-US", {

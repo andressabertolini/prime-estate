@@ -2,13 +2,22 @@ import { useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Property from "../components/Property";
 import fallbackData from "../data";
+import Search from "../components/Search";
 
 const Properties = () => {
     const [searchParams] = useSearchParams();
+    const queryString = searchParams.get("query");
     const purpose = searchParams.get("purpose") || "for-rent";
+    const homeType = searchParams.get("homeType");
+    const priceLimit = searchParams.get("priceLimit");
+    const beds = searchParams.get("beds");
+    const baths = searchParams.get("baths");
+    const sqft = searchParams.get("sqft");
 
     const [properties, setProperties] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+
+    const [filteredProperties, setFilteredProperties] = useState([]);
 
     const apiKey = process.env.REACT_APP_API_KEY;
     const apiHost = process.env.REACT_APP_API_HOST;
@@ -52,6 +61,7 @@ const Properties = () => {
 
         const checkAndFetch = async () => {
             const cachedData = JSON.parse(localStorage.getItem(cacheKey));
+
             if (cachedData && Date.now() - cachedData.timestamp < ONE_WEEK) {
                 setProperties(cachedData.data);
                 setIsLoading(false);
@@ -64,19 +74,59 @@ const Properties = () => {
         checkAndFetch();
     }, [purpose]);
 
+    const filterProperties = () => {
+        console.log(properties[0]?.category?.[1]?.slug);
+        console.log(properties[0].price);
+        console.log(properties[0].rooms);
+        console.log(properties[0].baths);
+    
+        let propertyType;
+        if (homeType) {
+            if (homeType === "apartment") {
+                propertyType = "apartments";
+            }
+        }
+    
+        const filtered = properties.filter((property) => {
+            const isValidPrice = property.price !== undefined;
+            const matchesPropertyType = homeType ? (property.category?.length > 1 && property.category[1]?.slug === propertyType) : true;
+            const matchesPrice = priceLimit ? property.price <= Number(priceLimit) : true;
+            const matchesBeds = beds ? property.rooms >= Number(beds) : true;
+            const matchesBaths = baths ? property.baths >= Number(baths) : true;
+            return isValidPrice && matchesPropertyType && matchesPrice && matchesBeds && matchesBaths;
+        });
+    
+        console.log("Filtered Properties:", filtered);
+        setFilteredProperties(filtered);
+    };
+
+    useEffect(() => {
+        if (properties.length > 0) {
+            filterProperties();
+        }
+    }, [properties, homeType, priceLimit, beds, baths]);
+
     return (
-        <div className="properties-page">
-            <h1 className="properties-page__title">Properties</h1>
-            <div className="properties-page__list">
-                {isLoading ? (
-                    <p>Loading...</p>
-                ) : properties.length > 0 ? (
-                    properties.map((property) => (
-                        <Property property={property} key={property.id} />
-                    ))
-                ) : (
-                    <p>No properties available.</p>
-                )}
+        <div className="properties-page container">
+            <div className="properties-page__grid">
+                <div className="search-properties">
+                    <h1 className="properties-page__title">Properties</h1>
+                    <Search />
+                </div>
+                <div>
+                    <h1 className="properties-page__title" style={{paddingLeft: "25px"}}>{purpose == "for-rent" ? "For Rent" : ""}</h1>
+                    <div className="properties-page__list">
+                        {isLoading ? (
+                            <p>Loading...</p>
+                        ) : filteredProperties.length > 0 ? (
+                            filteredProperties.map((property) => (
+                                <Property property={property} key={property.id} />
+                            ))
+                        ) : (
+                            <p>No properties available.</p>
+                        )}
+                    </div>
+                </div>
             </div>
         </div>
     );

@@ -4,17 +4,17 @@ import IconMagnifyingGlass from "../assets/icons/icon-magnifying-glass.svg";
 
 const Navigation = () => {
     return(
-        <nav className="nav">
+        <nav className="nav container">
             <div className="nav-left">
-                <NavLink to="/"><img src={Logo} className="logo"/></NavLink>
+                <NavLink to="/" style={{height: "58px", padding: 0}}><img src={Logo} className="logo"/></NavLink>
                 <NavLink to="/properties?purpose=for-rent"><strong>Rent</strong></NavLink>
                 <NavLink to="/properties?purpose=for-sale"><strong>Buy</strong></NavLink>
                 <NavLink to="/properties?purpose=for-sale">New Homes</NavLink>                
             </div>
             <div className="nav-right">
-                <NavLink to="/properties?purpose=for-sale">Agents</NavLink>
-                <NavLink to="/properties?purpose=for-sale">Calculator</NavLink>
-                <NavLink to="/properties?purpose=for-sale">
+                <NavLink to="/agents">Agents</NavLink>
+                <NavLink to="/calculator">Calculator</NavLink>
+                <NavLink to="/properties?purpose=for-sale" style={{padding: 0}}>
                     Search
                     <img src={IconMagnifyingGlass} className="search-icon"/>
                 </NavLink>

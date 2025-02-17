@@ -93,114 +93,111 @@ const Search = () => {
     },[]);
 
     return (
-        <div className="search">
-            <h1>Search for your dream home</h1>
-            <form onSubmit={handleSubmit}>
-                <div className="search-bar__container">
-                    <input 
-                        type="text" 
-                        className="search-bar" 
-                        placeholder="city, address, postal code or ID" 
-                        value={query}
-                        onChange={(e) => setQuery(e.target.value)}
-                    />
-                    <img src={IconMagnifyingGlass} alt="Search Icon" />
-                </div>
+        <form onSubmit={handleSubmit}>
+            <div className="search-bar__container">
+                <input 
+                    type="text" 
+                    className="search-bar" 
+                    placeholder="Search..." 
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                />
+                <img src={IconMagnifyingGlass} alt="Search Icon" />
+            </div>
+            <div className="search-options">
                 <ChoiceChips purposeValue={handlePurposeValue} />
-                <div className="search-options">
-                    <label>
-                        <span className="label-large">Home type</span>
-                        <div className="custom-select" ref={selectRef}>
-                            <div className="custom-select__trigger" onClick={toggleDropdown}>
-                                <span>{homeType.charAt(0).toUpperCase() + homeType.slice(1)}</span>
-                                <div className="arrow"></div>
-                            </div>
-                            {isOpen && (
-                                <div className="custom-options">
-                                    <div className="custom-option" onClick={() => handleSelect('apartment')}>Apartment</div>
-                                    <div className="custom-option" onClick={() => handleSelect('house')}>House</div>
-                                </div>
-                            )}
-                            
+                <label>
+                    <span className="label-large">Home type</span>
+                    <div className="custom-select" ref={selectRef}>
+                        <div className="custom-select__trigger" onClick={toggleDropdown}>
+                            <span>{homeType.charAt(0).toUpperCase() + homeType.slice(1)}</span>
+                            <div className="arrow"></div>
                         </div>
-                    </label>
-                    <label>
-                        <span className="label-small">Beds</span>
-                        <div className="custom-select" ref={selectRef2}>
-                            <div className="custom-select__trigger" onClick={toggleDropdown2}>
-                                <span>{beds}</span>
-                                <div className="arrow"></div>
+                        {isOpen && (
+                            <div className="custom-options">
+                                <div className="custom-option" onClick={() => handleSelect('apartment')}>Apartment</div>
+                                <div className="custom-option" onClick={() => handleSelect('house')}>House</div>
                             </div>
-                            {isOpen2 && (
-                                <div className="custom-options">
-                                    <div className="custom-option" onClick={() => handleSelect2(0)}>0</div>
-                                    <div className="custom-option" onClick={() => handleSelect2(1)}>1</div>
-                                    <div className="custom-option" onClick={() => handleSelect2(2)}>2</div>
-                                    <div className="custom-option" onClick={() => handleSelect2(3)}>3</div>
-                                    <div className="custom-option" onClick={() => handleSelect2(4)}>4</div>
-                                    <div className="custom-option" onClick={() => handleSelect2(5)}>5+</div>
-                                </div>
-                            )}
+                        )}
+                        
+                    </div>
+                </label>
+                <label>
+                    <span className="label-large">Price limit</span>
+                    <div className="search-options__range">
+                        <input 
+                            type="range" 
+                            min={rangeMin} 
+                            max={rangeMax} 
+                            step={100} 
+                            value={priceRange} 
+                            onChange={(e) => setPriceRange(Number(e.target.value))}
+                            style={{
+                                background: `linear-gradient(to right, #1296a9 ${calculatePercentage()}%, #8d8c8c ${calculatePercentage()}%)`,
+                            }}
+                        />
+                        <p>${priceRange.toLocaleString('en-US')}</p>
+                    </div>
+                </label>
+                <label>
+                    <span className="label-large">Square feet</span>
+                    <div className="search-options__range">
+                        <input 
+                            type="range" 
+                            min={1}
+                            max={5000}
+                            step={1}
+                            value={sqft}
+                            onChange={(e) => {setSqft(e.target.value)}}
+                            style={{
+                                background: `linear-gradient(to right, #1296a9 ${percentage()}%, #8d8c8c ${percentage()}%)`,
+                            }}
+                        />
+                        <p>{sqft}</p>
+                    </div>
+                </label>
+                <label>
+                    <span className="label-small">Beds</span>
+                    <div className="custom-select" ref={selectRef2}>
+                        <div className="custom-select__trigger" onClick={toggleDropdown2}>
+                            <span>{beds}</span>
+                            <div className="arrow"></div>
                         </div>
+                        {isOpen2 && (
+                            <div className="custom-options">
+                                <div className="custom-option" onClick={() => handleSelect2(0)}>0</div>
+                                <div className="custom-option" onClick={() => handleSelect2(1)}>1</div>
+                                <div className="custom-option" onClick={() => handleSelect2(2)}>2</div>
+                                <div className="custom-option" onClick={() => handleSelect2(3)}>3</div>
+                                <div className="custom-option" onClick={() => handleSelect2(4)}>4</div>
+                                <div className="custom-option" onClick={() => handleSelect2(5)}>5+</div>
+                            </div>
+                        )}
+                    </div>
 
-                    </label>
-                    <label>
-                        <span className="label-large">Price limit</span>
-                        <div className="search-options__range">
-                            <input 
-                                type="range" 
-                                min={rangeMin} 
-                                max={rangeMax} 
-                                step={100} 
-                                value={priceRange} 
-                                onChange={(e) => setPriceRange(Number(e.target.value))}
-                                style={{
-                                    background: `linear-gradient(to right, #1296a9 ${calculatePercentage()}%, #8d8c8c ${calculatePercentage()}%)`,
-                                }}
-                            />
-                            <p>${priceRange.toLocaleString('en-US')}</p>
+                </label>
+                <label>
+                    <span className="label-small">Baths</span>
+                    <div className="custom-select" ref={selectRef3}>
+                        <div className="custom-select__trigger" onClick={() => {setIsOpen3(!isOpen3)}}>
+                            <span>{baths}</span>
+                            <div className="arrow"></div>
                         </div>
-                    </label>
-                    <label>
-                        <span className="label-small">Baths</span>
-                        <div className="custom-select" ref={selectRef3}>
-                            <div className="custom-select__trigger" onClick={() => {setIsOpen3(!isOpen3)}}>
-                                <span>{baths}</span>
-                                <div className="arrow"></div>
+                        {isOpen3 && (
+                            <div className="custom-options">
+                                <div className="custom-option" onClick={() => handleDropdown3(0)}>0</div>
+                                <div className="custom-option" onClick={() => handleDropdown3(1)}>1</div>
+                                <div className="custom-option" onClick={() => handleDropdown3(2)}>2</div>
+                                <div className="custom-option" onClick={() => handleDropdown3(3)}>3</div>
+                                <div className="custom-option" onClick={() => handleDropdown3(4)}>4</div>
+                                <div className="custom-option" onClick={() => handleDropdown3(5 )}>5+</div>
                             </div>
-                            {isOpen3 && (
-                                <div className="custom-options">
-                                    <div className="custom-option" onClick={() => handleDropdown3(0)}>0</div>
-                                    <div className="custom-option" onClick={() => handleDropdown3(1)}>1</div>
-                                    <div className="custom-option" onClick={() => handleDropdown3(2)}>2</div>
-                                    <div className="custom-option" onClick={() => handleDropdown3(3)}>3</div>
-                                    <div className="custom-option" onClick={() => handleDropdown3(4)}>4</div>
-                                    <div className="custom-option" onClick={() => handleDropdown3(5 )}>5+</div>
-                                </div>
-                            )}
-                        </div>
-                    </label>
-                    <label>
-                        <span className="label-large">Square feet</span>
-                        <div className="search-options__range">
-                            <input 
-                                type="range" 
-                                min={1}
-                                max={5000}
-                                step={1}
-                                value={sqft}
-                                onChange={(e) => {setSqft(e.target.value)}}
-                                style={{
-                                    background: `linear-gradient(to right, #1296a9 ${percentage()}%, #8d8c8c ${percentage()}%)`,
-                                }}
-                            />
-                            <p>{sqft}</p>
-                        </div>
-                    </label>
-                </div>
-                <button type="submit" className="search-bar__submit">Search</button>
-            </form>
-        </div>
+                        )}
+                    </div>
+                </label>
+            </div>
+            <button type="submit" className="search-bar__submit">Search</button>
+        </form>
     );
 };
 

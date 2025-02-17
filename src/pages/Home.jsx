@@ -37,13 +37,17 @@ const Home = () => {
             const apiData = await response.json();
             setFunction(apiData?.hits || []);
 
-            localStorage.setItem(
-                cacheKey,
-                JSON.stringify({
-                    data: apiData?.hits || [],
-                    timestamp: Date.now(),
-                })
-            );
+            if(apiData?.hits.length > 0) {
+                localStorage.setItem(
+                    cacheKey,
+                    JSON.stringify({
+                        data: apiData?.hits || [],
+                        timestamp: Date.now(),
+                    })
+                );
+            } else {
+                console.warn("No valid data to cache for:", cacheKey);
+            }
         } catch (error) {
             console.error("API fetch failed, using fallback data:", error);
             setFunction(data);
@@ -53,7 +57,7 @@ const Home = () => {
     useEffect(() => {
         const checkAndFetch = async () => {
             const cachedRent = JSON.parse(localStorage.getItem("propertiesRent"));
-            if (cachedRent && Date.now() - cachedRent.timestamp < ONE_WEEK) {
+            if (cachedRent && Date.now() - cachedRent.timestamp < ONE_WEEK && cachedRent.length) {
                 setPropertiesRent(cachedRent.data);
                 setIsLoadingRent(false);
             } else {
@@ -62,7 +66,7 @@ const Home = () => {
             }
 
             const cachedSale = JSON.parse(localStorage.getItem("propertiesSale"));
-            if (cachedSale && Date.now() - cachedSale.timestamp < ONE_WEEK) {
+            if (cachedSale && Date.now() - cachedSale.timestamp < ONE_WEEK && cachedRent.length) {
                 setPropertiesSale(cachedSale.data);
                 setIsLoadingSale(false);
             } else {
@@ -76,13 +80,16 @@ const Home = () => {
 
     return (
         <>
-            <div className="search-container">
-                <Search />
+            <div className="home-search search-container">
+                <div className="search">
+                    <h1>Search for your dream home</h1>
+                    <Search />
+                </div>
             </div>
             <Banner 
                 purpose="Rent a Home"
                 title="Rental Homes for Everyone"
-                desc="Explore Apartments, Villas, Homes and more"
+                desc=""
                 buttonText="Explore Renting"
                 linkUrl="/properties?purpose=for-rent"
             />
@@ -105,7 +112,7 @@ const Home = () => {
             <Banner 
                 purpose="Buy a Home"
                 title="Find, Buy & Own Your Dream Home"
-                desc="Explore Apartments, Villas, Homes and more"
+                desc=""
                 buttonText="Explore Buying"
                 linkUrl="/properties?purpose=for-sale"
             />

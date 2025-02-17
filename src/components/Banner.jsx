@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 const Banner = ({ purpose, title, desc, buttonText, linkUrl }) => {
     return(
         <div className="banner">
-            <div className="banner-content">
+            <div className="banner-content container">
                 <div>
                     <h4>{ purpose }</h4>
                     <h2>{ title }</h2>
