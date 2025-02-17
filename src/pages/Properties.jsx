@@ -61,8 +61,9 @@ const Properties = () => {
 
         const checkAndFetch = async () => {
             const cachedData = JSON.parse(localStorage.getItem(cacheKey));
+            console.log(cachedData);
 
-            if (cachedData && Date.now() - cachedData.timestamp < ONE_WEEK) {
+            if (cachedData && Date.now() - cachedData.timestamp < ONE_WEEK && cachedData.length > 0) {
                 setProperties(cachedData.data);
                 setIsLoading(false);
             } else {

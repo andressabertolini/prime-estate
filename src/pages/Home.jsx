@@ -9,8 +9,8 @@ import Skeleton from "../components/Skeleton";
 const apiKey = process.env.REACT_APP_API_KEY;
 const apiHost = process.env.REACT_APP_API_HOST;
 
-const forRent = `https://${apiHost}/properties/list?locationExternalIDs=5002%2C6020&purpose=for-rent&hitsPerPage=4&page=0&lang=en&sort=city-level-score&rentFrequency=monthly&categoryExternalID=4&priceMax=9000&priceMin=6000`;
-const forSale = `https://${apiHost}/properties/list?locationExternalIDs=5002%2C6020&purpose=for-sale&hitsPerPage=4&page=0&lang=en&sort=city-level-score&rentFrequency=monthly&categoryExternalID=4`;
+const forRent = `https://${apiHost}/properties/list?locationExternalIDs=5002%2C6020&purpose=for-rent&hitsPerPage=4&page=0&rentFrequency=monthly&categoryExternalID=4&priceMax=9000&priceMin=6000`;
+const forSale = `https://${apiHost}/properties/list?locationExternalIDs=5002%2C6020&purpose=for-sale&hitsPerPage=4&page=0&rentFrequency=monthly&categoryExternalID=4`;
 
 const Home = () => {
     const [propertiesRent, setPropertiesRent] = useState([]);
@@ -37,7 +37,10 @@ const Home = () => {
             const apiData = await response.json();
             setFunction(apiData?.hits || []);
 
-            if(apiData?.hits.length > 0) {
+            const properties = apiData?.hits ?? [];
+            console.log(apiData);
+
+            if (properties.length > 0) {
                 localStorage.setItem(
                     cacheKey,
                     JSON.stringify({
@@ -57,7 +60,7 @@ const Home = () => {
     useEffect(() => {
         const checkAndFetch = async () => {
             const cachedRent = JSON.parse(localStorage.getItem("propertiesRent"));
-            if (cachedRent && Date.now() - cachedRent.timestamp < ONE_WEEK && cachedRent.length) {
+            if (cachedRent && Date.now() - cachedRent.timestamp < ONE_WEEK && cachedRent.length > 0) {
                 setPropertiesRent(cachedRent.data);
                 setIsLoadingRent(false);
             } else {
@@ -66,7 +69,7 @@ const Home = () => {
             }
 
             const cachedSale = JSON.parse(localStorage.getItem("propertiesSale"));
-            if (cachedSale && Date.now() - cachedSale.timestamp < ONE_WEEK && cachedRent.length) {
+            if (cachedSale && Date.now() - cachedSale.timestamp < ONE_WEEK && cachedSale.length > 0) {
                 setPropertiesSale(cachedSale.data);
                 setIsLoadingSale(false);
             } else {
