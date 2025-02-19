@@ -8,8 +8,7 @@ const Navigation = () => {
             <div className="nav-left">
                 <NavLink to="/" style={{height: "58px", padding: 0}}><img src={Logo} className="logo"/></NavLink>
                 <NavLink to="/properties?purpose=for-rent"><strong>Rent</strong></NavLink>
-                <NavLink to="/properties?purpose=for-sale"><strong>Buy</strong></NavLink>
-                <NavLink to="/properties?purpose=for-sale">New Homes</NavLink>                
+                <NavLink to="/properties?purpose=for-sale"><strong>Buy</strong></NavLink>               
             </div>
             <div className="nav-right">
                 <NavLink to="/agents">Agents</NavLink>

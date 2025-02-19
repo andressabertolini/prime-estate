@@ -1,25 +1,35 @@
 import ChoiceChips from "./ChoiceChips";
 import IconMagnifyingGlass from "../assets/icons/icon-magnifying-glass.svg";
 import { useState, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const Search = () => {
-    const [query, setQuery] = useState("");
-    const navigate = useNavigate();
-    const [purpose, setPurpose] = useState("");
+    const [searchParams] = useSearchParams();
+    const paramQuery = searchParams.get("query") || "";
+    const paramPurpose = searchParams.get("purpose") || "for-rent";
+    const paramHomeType = searchParams.get("homeType") || "apartment";
+    const paramPriceLimit = searchParams.get("priceLimit") || "";
+    const paramBeds = searchParams.get("beds") || 0;
+    const paramBaths = searchParams.get("baths") || 0;
+    const paramSqft = searchParams.get("sqft") || 5000;
+
+    const [query, setQuery] = useState(paramQuery);
+    const [purpose, setPurpose] = useState(paramPurpose);
     const [rangeMin, setRangeMin] = useState(100);
     const [rangeMax, setRangeMax] = useState(50000);
-    const [priceRange, setPriceRange] = useState(50000);
-    const [homeType, setHomeType] = useState("apartment");
+    const [priceRange, setPriceRange] = useState(paramPriceLimit);
+    const [homeType, setHomeType] = useState(paramHomeType);
+
+    const navigate = useNavigate();
 
     const [isOpen, setIsOpen] = useState(false);
     const toggleDropdown = () => setIsOpen(!isOpen);
 
     const [isOpen2, setIsOpen2] = useState(false);
-    const [beds, setBeds] = useState(0);
+    const [beds, setBeds] = useState(paramBeds);
     const toggleDropdown2 = () => setIsOpen2(!isOpen2);
 
-    const [sqft, setSqft] = useState(5000);
+    const [sqft, setSqft] = useState(paramSqft);
 
     const calculatePercentage = () => 
         ((priceRange - rangeMin) / (rangeMax - rangeMin)) * 100;
@@ -62,7 +72,7 @@ const Search = () => {
     }
 
     const [isOpen3, setIsOpen3] = useState(false);
-    const [baths, setBaths] = useState(0);
+    const [baths, setBaths] = useState(paramBaths);
 
     const handleDropdown3 = (baths) => {
         if (baths == 5){
@@ -92,6 +102,12 @@ const Search = () => {
         };
     },[]);
 
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+            handleSubmit(event);
+        }
+    };
+
     return (
         <form onSubmit={handleSubmit}>
             <div className="search-bar__container">
@@ -101,8 +117,9 @@ const Search = () => {
                     placeholder="Search..." 
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
+                    onKeyDown={handleKeyDown}
                 />
-                <img src={IconMagnifyingGlass} alt="Search Icon" />
+                <img src={IconMagnifyingGlass} alt="Search Icon" onClick={handleSubmit}/>
             </div>
             <div className="search-options">
                 <ChoiceChips purposeValue={handlePurposeValue} />

@@ -127,8 +127,8 @@ main {
   font-weight: bold;
   font-size: 12px;
   padding: 5px 10px;
-  margin-top: 20px;
   display: inline-block;
+  margin-top: 20px;
 }
 
 .property-card h3 {
@@ -202,6 +202,41 @@ main {
 
 .property-page__price {
   font-size: 40px;
+  margin: 0;
+}
+
+.property-page__amenities {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.property-page__amenities > li {
+  width: 50%;
+}
+
+.property-page__amenities,
+.property-page__amenities ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.property-page__amenities ul {
+  margin-bottom: 10px;
+}
+
+.property-page__amenities li ul li{
+  display: inline-grid;
+  margin: 0 3px 3px 0;
+  padding: 3px 7px;
+  font-size: 12px;
+  background-color: #ccc;
+  border-radius: 50px;
+}
+
+.property-page__columns {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 30px;
 }
 
 .skeleton {
@@ -313,6 +348,7 @@ main {
 
 
 .search-container .search {
+  width: 100%;
   max-width: 1000px;
   margin: 0 auto;
   background-color: #fff;
@@ -320,6 +356,13 @@ main {
   box-shadow: 0px 0px 8px 0px rgba(0,0,0,40%);
   position: relative;
   z-index: 1;
+  box-sizing: border-box;
+}
+
+@media(max-width: 1000px){
+  .search-container .search {
+    max-width: 768px;
+  }
 }
 
 .search-container .search h1 {
@@ -348,6 +391,7 @@ main {
   position: absolute;
   top: 10px;
   left: 10px;
+  cursor: pointer;
 }
 
 .search-bar__submit, .button {
@@ -585,7 +629,8 @@ input[type="range"]::-moz-range-thumb {
   gap: 80px;
 }
 
-.calculator__grid label span {
+.calculator__grid label span,
+.property-page__contact label span{
   margin-bottom: 10px;
   display: block;
 }
@@ -597,4 +642,38 @@ input[type="range"]::-moz-range-thumb {
   margin-bottom: 20px;
   box-sizing: border-box;
   border: 1px solid #8d8c8c;
+}
+
+.property-page__contact{
+  margin-top: -100px;
+  background-color: #fff;
+}
+
+.property-page__contact-wrapper {
+  border: 1px solid #ccc;
+  padding: 15px;
+  padding-bottom: 30px;
+}
+
+.property-page__contact img{
+  width: 120px;
+}
+
+.related-properties {
+  margin-top: 40px;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 50px;
+  width: 30px !important;
+  height: 30px !important;
+}
+
+.swiper-button-prev:after, 
+.swiper-button-next:after {
+  font-size: 20px !important;
+  color: #1296a9;
 }

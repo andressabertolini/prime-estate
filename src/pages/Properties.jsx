@@ -22,7 +22,7 @@ const Properties = () => {
     const apiKey = process.env.REACT_APP_API_KEY;
     const apiHost = process.env.REACT_APP_API_HOST;
 
-    const query = `https://${apiHost}/properties/list?locationExternalIDs=5002%2C6020&purpose=${purpose}&lang=en&sort=city-level-score&rentFrequency=monthly&categoryExternalID=4`;
+    const query = `https://${apiHost}/properties/list?locationExternalIDs=5002%2C6020&purpose=${purpose}&lang=en&rentFrequency=monthly&categoryExternalID=4`;
 
     const ONE_WEEK = 7 * 24 * 60 * 60 * 1000;
 
@@ -43,13 +43,20 @@ const Properties = () => {
             const apiData = await response.json();
             setFunction(apiData?.hits || []);
 
-            localStorage.setItem(
-                cacheKey,
-                JSON.stringify({
-                    data: apiData?.hits || [],
-                    timestamp: Date.now(),
-                })
-            );
+            const properties = apiData?.hits ?? [];
+            //console.log(apiData);
+
+            if (properties.length > 0) {
+                localStorage.setItem(
+                    cacheKey,
+                    JSON.stringify({
+                        data: apiData?.hits || [],
+                        timestamp: Date.now(),
+                    })
+                );
+            } else {
+                console.warn("No valid data to cache for:", cacheKey);
+            }
         } catch (error) {
             console.error("API fetch failed, using fallback data:", error);
             setFunction(fallbackData);
@@ -76,10 +83,10 @@ const Properties = () => {
     }, [purpose]);
 
     const filterProperties = () => {
-        console.log(properties[0]?.category?.[1]?.slug);
-        console.log(properties[0].price);
-        console.log(properties[0].rooms);
-        console.log(properties[0].baths);
+        // console.log(properties[0]?.category?.[1]?.slug);
+        // console.log(properties[0].price);
+        // console.log(properties[0].rooms);
+        // console.log(properties[0].baths);
     
         let propertyType;
         if (homeType) {
@@ -115,7 +122,8 @@ const Properties = () => {
                     <Search />
                 </div>
                 <div>
-                    <h1 className="properties-page__title" style={{paddingLeft: "25px"}}>{purpose == "for-rent" ? "For Rent" : ""}</h1>
+                    {purpose == "for-rent" ? <h1 className="properties-page__title" style={{paddingLeft: "25px"}}>For Rent</h1> : ""}
+                    {purpose == "for-sale" ? <h1 className="properties-page__title" style={{paddingLeft: "25px"}}>For Sale</h1> : ""}
                     <div className="properties-page__list">
                         {isLoading ? (
                             <p>Loading...</p>

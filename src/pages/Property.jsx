@@ -1,8 +1,14 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from 'swiper/modules';
+
+import RelatedProperties from "../components/RelatedProperties"
 
 import house1Api from "../assets/images/house1-api.jpeg";
+import IconSqft from "../assets/icons/icon-sqft.svg";
+import IconBed from "../assets/icons/icon-bed.svg";
+import IconBath from "../assets/icons/icon-bath.svg";
 
 const fallbackProperty = {
     title: "Beautiful Apartment in Downtown",
@@ -113,27 +119,27 @@ const Property = () => {
 
     return (
         <div className="property-page">
-            <h1>{property?.title}</h1>
             <Swiper
                 slidesPerView={slidesPerView}
                 pagination={{clickable: true}}
+                spaceBetween={15}
+                modules={[Navigation]}
                 navigation
             >
-                <SwiperSlide>
-                    <img
-                        src={property?.coverPhoto?.url || ""}
-                        alt="Property Cover"
-                        className="property-page__slide"
-                    />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <img
-                        src={property?.coverPhoto?.url || ""}
-                        alt="Property Cover"
-                        className="property-page__slide"
-                    />
-                </SwiperSlide>
+                {property?.photos.map((photo) => (
+                    <SwiperSlide>
+                        <img
+                            src={photo?.url || ""}
+                            alt={photo?.title}
+                            className="property-page__slide"
+                        />
+                    </SwiperSlide>
+                ))}
             </Swiper>
+            <span className="property-badge">
+                {property.purpose === 'for-rent' ? 'For Rent' : ''}
+                {property.purpose === 'for-sale' ? 'For Sale' : ''}
+            </span>
             <p className="property-page__price">
                 <strong>
                     {property?.price?.toLocaleString("en-US", {
@@ -142,22 +148,64 @@ const Property = () => {
                     })}
                 </strong>
             </p>
-            <h3>Amenities:</h3>
-            <ul>
-                {property?.amenities?.map((group) => (
-                    <li key={group.externalGroupID}>
-                        <strong>{group.text}</strong>
-                        <ul>
-                            {group.amenities.map((amenity, index) => (
-                                <li key={index}>{amenity.text}</li>
-                            ))}
-                        </ul>
-                    </li>
-                ))}
-            </ul>
-            <hr />
-            <h3>Description:</h3>
+            <p className="property-features">
+                <span>
+                    <img src={IconSqft} className="property-icon sqft" />
+                    {property.area && typeof property.area === "number"
+                        ? (parseInt(property.area * 10.764))
+                        : ""} <strong>sqft</strong>&nbsp;
+                </span>
+                <span>
+                    <img src={IconBed} className="property-icon bed" />
+                    {property.rooms} <strong>bed</strong>&nbsp;
+                </span>
+                <span>
+                    <img src={IconBath} className="property-icon bath" />
+                    {property.baths} <strong>bath</strong>
+                </span>
+            </p>
+            <div className="property-page__columns">
+                <div>
+                    <h3>Amenities</h3>
+                    <ul className="property-page__amenities">
+                        {property?.amenities?.map((group) => (
+                            <li key={group.externalGroupID}>
+                                <strong>{group.text}</strong>
+                                <ul>
+                                    {group.amenities.map((amenity, index) => (
+                                        <li key={index}>{amenity.text}</li>
+                                    ))}
+                                </ul>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+                <div className="property-page__contact">
+                    <div className="property-page__contact-wrapper">
+                        <img src={property.agency.logo.url} alt="Agency Logo" />
+                        <h3>Interested? Send your informarion and we will contact you shortly</h3>
+                        <label>
+                            <span>Name</span>
+                            <input type="text" className="input"/>
+                        </label>
+                        <label>
+                            <span>Email</span>
+                            <input type="text" className="input"/>
+                        </label>
+                        <label>
+                            <span>Phone</span>
+                            <input type="text" className="input"/>
+                        </label>
+                        <button className="button">Send</button>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Description</h3>
+            <h1>{property?.title}</h1>
             <p>{property?.description}</p>
+
+            <RelatedProperties />
         </div>
     );
 };
