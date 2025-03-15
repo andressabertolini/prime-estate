@@ -6,9 +6,9 @@ import { Navigation } from 'swiper/modules';
 import RelatedProperties from "../components/RelatedProperties"
 
 import house1Api from "../assets/images/house1-api.jpeg";
-import IconSqft from "../assets/icons/icon-sqft.svg";
-import IconBed from "../assets/icons/icon-bed.svg";
-import IconBath from "../assets/icons/icon-bath.svg";
+import IconSqft2 from "../assets/icons/icon-sqft.svg";
+import IconBed2 from "../assets/icons/icon-bed.svg";
+import IconBath2 from "../assets/icons/icon-bath.svg";
 
 const fallbackProperty = {
     title: "Beautiful Apartment in Downtown",
@@ -150,17 +150,17 @@ const Property = () => {
             </p>
             <p className="property-features">
                 <span>
-                    <img src={IconSqft} className="property-icon sqft" />
+                    <img src={IconSqft2} className="property-icon sqft" />
                     {property.area && typeof property.area === "number"
                         ? (parseInt(property.area * 10.764))
                         : ""} <strong>sqft</strong>&nbsp;
                 </span>
                 <span>
-                    <img src={IconBed} className="property-icon bed" />
+                    <img src={IconBed2} className="property-icon bed" />
                     {property.rooms} <strong>bed</strong>&nbsp;
                 </span>
                 <span>
-                    <img src={IconBath} className="property-icon bath" />
+                    <img src={IconBath2} className="property-icon bath" />
                     {property.baths} <strong>bath</strong>
                 </span>
             </p>

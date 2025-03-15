@@ -68,16 +68,12 @@ main {
   }
 }
 
-.banner {
-  background-color: #1296a9;
-}
-
 .banner-content {
-  padding: 15px 0;
+  padding-top: 15px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: white;
+  color: #1296a9;
   /* max-width: 1000px;
   margin: 0 auto; */
   /* gap: 100px; */
@@ -626,9 +622,10 @@ input[type="range"]::-moz-range-thumb {
 
 .custom-select {
   position: relative;
-  width: 200px;
   user-select: none;
   font-size: 14px;
+  width: 100%;
+  max-width: 200px;
 }
 
 @media(max-width: 1000px){

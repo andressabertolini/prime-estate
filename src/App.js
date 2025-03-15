@@ -1,5 +1,5 @@
 import './App.css';
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 /* layouts */
 import Navigation from "./layouts/Navigation";
@@ -15,8 +15,6 @@ import Calculator from "./pages/Calculator";
 function App() {
   return (
     <div className="App">
-      {/* <Router basename="/project/prime-estate"> */}
-      <Router>
         <Navigation />
         <main>
           <Routes>
@@ -28,7 +26,6 @@ function App() {
           </Routes>
         </main>
         <Footer />
-      </Router>
     </div>
   );
 }
