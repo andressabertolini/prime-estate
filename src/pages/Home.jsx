@@ -10,14 +10,14 @@ const apiKey = process.env.REACT_APP_API_KEY;
 const apiHost = process.env.REACT_APP_API_HOST;
 
 const forRent = `https://${apiHost}/properties/list?locationExternalIDs=5002%2C6020&purpose=for-rent&hitsPerPage=4&page=0&rentFrequency=monthly&categoryExternalID=4&priceMax=9000&priceMin=6000`;
-//const forSale = `https://${apiHost}/properties/list?locationExternalIDs=5002%2C6020&purpose=for-sale&hitsPerPage=4&page=0&rentFrequency=monthly&categoryExternalID=4`;
+const forSale = `https://${apiHost}/properties/list?locationExternalIDs=5002%2C6020&purpose=for-sale&hitsPerPage=4&page=0&rentFrequency=monthly&categoryExternalID=4`;
 
 const Home = () => {
     const {
         data: propertiesRent,
         isError,
         isPending,
-      } = useQuery({
+    } = useQuery({
         queryKey: ["propertiesRent"],
         staleTime: 1000 * 60 * 30,
         queryFn: async () => {
@@ -31,7 +31,27 @@ const Home = () => {
           const data = await response.json();
           return data?.hits;
         },
-      });
+    });
+
+    const{
+        data: propertiesSale,
+        isError2,
+        isPending2
+    } = useQuery({
+        queryKey: ["propertiesSale"],
+        staleTime: 100 * 60 * 30,
+        queryFn: async () => {
+            const response = await fetch(forSale, {
+                method: "GET",
+                headers: {
+                    "X-RapidAPI-Key": apiKey,
+                    "X-RapidAPI-Host": apiHost
+                },
+              });
+              const data = await response.json();
+              return data?.hits;
+        },
+    });
 
     return(
         <>
@@ -71,7 +91,19 @@ const Home = () => {
                 linkUrl="/properties?purpose=for-sale"
             />
             <div className="properties-list">
-                
+            {isPending2 && 
+                <>
+                    <Skeleton />
+                    <Skeleton />
+                    <Skeleton />
+                    <Skeleton />
+                </>
+            }
+            {!isPending2 && (
+                propertiesSale?.map((property) => {
+                    return <Property property={property} key={property.id} />;
+                })
+            )} 
             </div>
         </>
     );
