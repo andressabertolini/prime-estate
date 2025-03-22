@@ -30,6 +30,31 @@ const fallbackProperty = {
     description: "Spacious apartment with modern amenities and a beautiful view of the city.",
 };
 
+type PropertyType = {
+    title: string;
+    coverPhoto: { url: string }; // Substitua `any` por `string` se possível
+    price: number;
+    amenities: {
+        externalGroupID: string;
+        text: string;
+        amenities: { text: string }[];
+    }[];
+    photos?: { 
+        url: string;
+        title: string;
+    }[];
+    agency?: {
+        logo : {
+            url: string;
+        }
+    }
+    baths?: number;
+    rooms?: number;
+    area?: number;
+    purpose?: string;
+    description: string;
+};
+
 const Property = () => {
     const { id } = useParams();
     const apiKey = process.env.REACT_APP_API_KEY;
@@ -37,17 +62,17 @@ const Property = () => {
 
     const url = `https://bayut.p.rapidapi.com/properties/detail?externalID=${id}`;
 
-    const [property, setProperty] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
-    const [slidesPerView, setSlidesPerView] = useState(1);
+    const [property, setProperty] = useState<PropertyType | null>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [slidesPerView, setSlidesPerView] = useState<number>(1);
 
     const fetchAPI = async () => {
         try {
             const response = await fetch(url, {
                 method: "GET",
                 headers: {
-                    "X-RapidAPI-Key": apiKey,
-                    "X-RapidAPI-Host": apiHost,
+                    "X-RapidAPI-Key": apiKey || "",
+                    "X-RapidAPI-Host": apiHost || "",
                 },
             });
 
@@ -78,7 +103,7 @@ const Property = () => {
         const ONE_WEEK = 7 * 24 * 60 * 60 * 1000;
 
         const checkAndFetch = async () => {
-            const cachedData = JSON.parse(localStorage.getItem(cacheKey));
+            const cachedData = JSON.parse(localStorage.getItem(cacheKey) || "null");
 
             if (cachedData && Date.now() - cachedData.timestamp < ONE_WEEK) {
                 setProperty(cachedData.data);
@@ -126,11 +151,11 @@ const Property = () => {
                 modules={[Navigation]}
                 navigation
             >
-                {property?.photos.map((photo) => (
+                {property?.photos?.map((photo) => (
                     <SwiperSlide>
                         <img
                             src={photo?.url || ""}
-                            alt={photo?.title}
+                            alt={photo?.title || ""}
                             className="property-page__slide"
                         />
                     </SwiperSlide>
@@ -152,7 +177,7 @@ const Property = () => {
                 <span>
                     <img src={IconSqft2} className="property-icon sqft" />
                     {property.area && typeof property.area === "number"
-                        ? (parseInt(property.area * 10.764))
+                        ? Math.round((property.area * 10.764))
                         : ""} <strong>sqft</strong>&nbsp;
                 </span>
                 <span>
@@ -182,7 +207,9 @@ const Property = () => {
                 </div>
                 <div className="property-page__contact">
                     <div className="property-page__contact-wrapper">
-                        <img src={property.agency.logo.url} alt="Agency Logo" />
+                        {property.agency && property.agency.logo && (
+                            <img src={property.agency.logo.url} alt="Agency Logo" />
+                        )}
                         <h3>Interested? Send your informarion and we will contact you shortly</h3>
                         <label>
                             <span>Name</span>

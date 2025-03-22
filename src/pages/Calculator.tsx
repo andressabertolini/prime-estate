@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { ChangeEvent } from "react";
 
 const Calculator = () => {
     const [income, setIncome] = useState("");
@@ -27,7 +28,7 @@ const Calculator = () => {
         setPurchasingPower(formatCurrency(result));
     };
 
-    const formatCurrency = (value) => {
+    const formatCurrency = (value: number) => {
         return new Intl.NumberFormat("en-US", {
             style: "currency",
             currency: "USD",
@@ -35,12 +36,12 @@ const Calculator = () => {
         }).format(value);
     };
 
-    const handleIncome = (e) => {
+    const handleIncome = (e: ChangeEvent<HTMLInputElement>) => {
         const numericValue = e.target.value.replace(/\D/g, ""); // Remove tudo que não for número
         setIncome(numericValue.replace(/\B(?=(\d{3})+(?!\d))/g, ",")); // Adiciona as vírgulas
     };
 
-    const handleEntry = (e) => {
+    const handleEntry = (e: ChangeEvent<HTMLInputElement>) => {
         const numericValue = e.target.value.replace(/\D/g, "");
         setEntry(numericValue.replace(/\B(?=(\d{3})+(?!\d))/g, ","));
     };

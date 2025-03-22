@@ -4,7 +4,7 @@ import LogoWhite from "../assets/images/logo-text-white.png";
 const Footer = () => {
     return(
         <div className="footer container">
-            <img src={LogoWhite} className="logo" />
+            <img src={LogoWhite} className="logo" alt="Logo"/>
             <span>Prime Estate 2025</span>
             <nav>
                 <NavLink to="/properties?purpose=for-rent">Rent</NavLink>

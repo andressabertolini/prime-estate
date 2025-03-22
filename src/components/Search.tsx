@@ -9,17 +9,17 @@ const Search = () => {
     const paramQuery = searchParams.get("query") || "";
     const paramPurpose = searchParams.get("purpose") || "for-rent";
     const paramHomeType = searchParams.get("homeType") || "apartment";
-    const paramPriceLimit = searchParams.get("priceLimit") || "";
+    const paramPriceLimit = Number(searchParams.get("priceLimit")) || 0;
     const paramBeds = searchParams.get("beds") || 0;
     const paramBaths = searchParams.get("baths") || 0;
-    const paramSqft = searchParams.get("sqft") || 5000;
+    const paramSqft = Number(searchParams.get("sqft")) || 5000;
 
     const [query, setQuery] = useState(paramQuery);
     const [purpose, setPurpose] = useState(paramPurpose);
     const [rangeMin, setRangeMin] = useState(100);
     const [rangeMax, setRangeMax] = useState(50000);
-    const [priceRange, setPriceRange] = useState(paramPriceLimit);
-    const [homeType, setHomeType] = useState(paramHomeType);
+    const [priceRange, setPriceRange] = useState<number>(paramPriceLimit);
+    const [homeType, setHomeType] = useState<string>(paramHomeType);
 
     const [openFilter, setOpenFilter] = useState(false);
 
@@ -32,68 +32,64 @@ const Search = () => {
     const [beds, setBeds] = useState(paramBeds);
     const toggleDropdown2 = () => setIsOpen2(!isOpen2);
 
-    const [sqft, setSqft] = useState(paramSqft);
+    const [sqft, setSqft] = useState<number>(paramSqft);
 
     const calculatePercentage = () => 
         ((priceRange - rangeMin) / (rangeMax - rangeMin)) * 100;
 
     const percentage = () => ((sqft - 1) / (5000 - 1)) * 100;
 
-    const selectRef = useRef(null);
-    const selectRef2 = useRef(null);
-    const selectRef3 = useRef(null);
+    const selectRef = useRef<HTMLDivElement | null>(null);
+    const selectRef2 = useRef<HTMLDivElement | null>(null);
+    const selectRef3 = useRef<HTMLDivElement | null>(null);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement> | React.KeyboardEvent<HTMLInputElement> | React.MouseEvent<HTMLImageElement>) => {
         e.preventDefault();
         setOpenFilter(false);
         navigate(`/properties?query=${query}&purpose=${purpose}&homeType=${homeType}&priceLimit=${priceRange}&beds=${beds}&baths=${baths}&sqft=${sqft}`);
     };
 
-    const handlePurposeValue = (data) => {
+    const handlePurposeValue = (data: string) => {
         setPurpose(data);
         if (data === "for-sale") {
             setRangeMin(1000);
             setRangeMax(5000000);
-            setPriceRange(5000000);
+            if(!priceRange){setPriceRange(5000000)};
         } else if (data === "for-rent") {
             setRangeMin(100);
             setRangeMax(50000);
-            setPriceRange(50000);
+            if(!priceRange){setPriceRange(50000)};
         }
     };
 
-    const handleSelect = (type) => {
+    const handleSelect = (type:string) => {
         setHomeType(type);
         setIsOpen(false);
     }
 
-    const handleSelect2 = (number) => {
-        if (number == 5){
-            number = `${number}+`;
-        }
-        setBeds(number);
+    const handleSelect2 = (number: number) => {
+        const displayValue = number === 5 ? `${number}+` : number;
+        setBeds(displayValue);
         setIsOpen2(false);
     }
 
     const [isOpen3, setIsOpen3] = useState(false);
     const [baths, setBaths] = useState(paramBaths);
 
-    const handleDropdown3 = (baths) => {
-        if (baths == 5){
-            baths = `${baths}+`;
-        }
-        setBaths(baths);
+    const handleDropdown3 = (baths: number) => {
+        const displayValue = baths === 5 ? `${baths}+` : baths;
+        setBaths(displayValue);
         setIsOpen3(false);
     }
 
-    const handleClickOutside = (event) => {
-        if(selectRef.current && !selectRef.current.contains(event.target)){
+    const handleClickOutside = (event: MouseEvent) => {
+        if(selectRef.current && !selectRef.current.contains(event.target as Node)){
             setIsOpen(false);
         }
-        if(selectRef2.current && !selectRef2.current.contains(event.target)){
+        if(selectRef2.current && !selectRef2.current.contains(event.target as Node)){
             setIsOpen2(false);
         }
-        if(selectRef3.current && !selectRef3.current.contains(event.target)){
+        if(selectRef3.current && !selectRef3.current.contains(event.target as Node)){
             setIsOpen3(false);
         }
     }
@@ -106,7 +102,7 @@ const Search = () => {
         };
     },[]);
 
-    const handleKeyDown = (event) => {
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
             handleSubmit(event);
         }
@@ -174,7 +170,7 @@ const Search = () => {
                                 max={5000}
                                 step={1}
                                 value={sqft}
-                                onChange={(e) => {setSqft(e.target.value)}}
+                                onChange={(e) => {setSqft(Number(e.target.value))}}
                                 style={{
                                     background: `linear-gradient(to right, #1296a9 ${percentage()}%, #8d8c8c ${percentage()}%)`,
                                 }}

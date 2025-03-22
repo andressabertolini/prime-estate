@@ -1,15 +1,17 @@
 import { NavLink } from "react-router-dom";
 
-const Banner = ({ purpose, title, desc, buttonText, linkUrl }) => {
+interface BannerProps {
+    title: string;
+    buttonText: string;
+    linkUrl: string;
+}
+
+const Banner: React.FC<BannerProps> = ({ title, buttonText, linkUrl }) => {
     return(
         <div className="banner">
             <div className="banner-content container">
                 <div>
-                    <h4>{ purpose }</h4>
                     <h2>{ title }</h2>
-                </div>
-                <div>
-                    <p>{ desc }</p>
                 </div>
                 <div>
                     <NavLink to={ linkUrl }>{ buttonText }</NavLink>
