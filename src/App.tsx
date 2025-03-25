@@ -1,4 +1,4 @@
-import './App.css';
+import './styles/global.css';
 import { Routes, Route } from "react-router-dom";
 
 /* layouts */

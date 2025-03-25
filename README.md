@@ -10,5 +10,6 @@ This project uses:
 - Typescript
 - React Router DOM
 - React Query
+- Custom Hooks (Context API)
 
 In the future I'm implementing Tailwind CSS
