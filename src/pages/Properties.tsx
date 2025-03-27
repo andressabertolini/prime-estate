@@ -1,5 +1,6 @@
 import { useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import { IProperty, PropertiesService } from "../services/api/properties/PropertiesService";
 
 import Property from "../components/Property";
 import Search from "../components/Search";
@@ -14,9 +15,6 @@ const Properties = () => {
     const beds = searchParams.get("beds");
     const baths = searchParams.get("baths");
     const sqft = searchParams.get("sqft");
-
-    const apiKey = process.env.REACT_APP_API_KEY;
-    const apiHost = process.env.REACT_APP_API_HOST;
 
     const query = new URLSearchParams({
         locationExternalIDs: "5002,6020",
@@ -37,31 +35,10 @@ const Properties = () => {
         queryKey: ["properties", purpose, homeType, priceLimit, beds, baths],
         staleTime: 1000 * 60 * 30,
         queryFn: async () => {
-            const response = await fetch(`https://${apiHost}/properties/list?${query}`,{
-                method: "GET",
-                headers: {
-                    "X-RapidAPI-Key": apiKey || "",
-                    "X-RapidAPI-Host": apiHost || ""
-                }
-            });
-            const data = await response.json();
-            return data?.hits;
+            const response = await PropertiesService.getProperties(query);
+            return response.hits || [];
         }
     });
-
-    type PropertyType = {
-        id: string;
-        externalID: string;
-        coverPhoto: { url: string };
-        purpose: "for-rent" | "for-sale";
-        title: string;
-        area?: number;
-        rooms: number;
-        baths: number;
-        amenities?: string[];
-        price: number;
-        agency: { logo: { url: string } };
-    };
 
     return (
         <div className="properties-page container">
@@ -78,7 +55,7 @@ const Properties = () => {
                             [...Array(9)].map((_, i) => <Skeleton key={i} />)
                         }
                         {!isPending &&
-                            properties?.map((property: PropertyType) => (
+                            properties?.map((property: IProperty) => (
                                 <Property property={property} key={property.id} />
                             ))
                         }

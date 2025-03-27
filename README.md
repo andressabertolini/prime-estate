@@ -9,7 +9,8 @@ This project uses:
 - React 19
 - Typescript
 - React Router DOM
-- React Query
 - Custom Hooks (Context API)
+- React Query
+- Axios
 
 In the future I'm implementing Tailwind CSS
